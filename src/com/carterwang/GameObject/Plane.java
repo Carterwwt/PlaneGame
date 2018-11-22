@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 public class Plane extends GameObject{
 
     int HP = 100;
-    int score =0;
+    int score =98;
 
     boolean left,right,up,down;
     private boolean live = true;

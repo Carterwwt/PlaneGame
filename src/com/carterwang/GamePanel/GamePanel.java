@@ -11,7 +11,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,37 +39,7 @@ public class GamePanel extends JPanel {
     private int shellHeight = CONSTANT.shellheight;
 
     public GamePanel() {
-        KeyAdapter keyAdapter = new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                plane.addDirection(e);
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_SPACE :
-                        Shell shell = new Shell();
-                        shell.handleMove(plane);
-                        selfShells.add(shell);
-                        if(selfShells.size() == 15)
-                            selfShells.remove(0) ;
-                        break;
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                super.keyReleased(e);
-                plane.minusDirection(e);
-            }
-        };
-
-        this.addKeyListener(keyAdapter);
-        this.setFocusable(true);
-
-        int x = CONSTANT.width/2 - planeImage.getWidth(null)/2;
-        int y = CONSTANT.height - planeImage.getHeight() - 20;
-        int width = planeImage.getWidth();
-        int height = planeImage.getHeight();
-        plane = new Plane(planeImage,x,y,width,height,3);
+        //setPlane();
     }
 
     public static BufferedImage getBackgroundImage() {
@@ -295,6 +264,8 @@ public class GamePanel extends JPanel {
 
     public void gameStart() {
 
+        setPlane();
+
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -307,6 +278,40 @@ public class GamePanel extends JPanel {
             }
         },10,10);
 
+    }
+
+    private void setPlane() {
+        KeyAdapter keyAdapter = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                plane.addDirection(e);
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_SPACE :
+                        Shell shell = new Shell();
+                        shell.handleMove(plane);
+                        selfShells.add(shell);
+                        if(selfShells.size() == 15)
+                            selfShells.remove(0) ;
+                        break;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                plane.minusDirection(e);
+            }
+        };
+
+        this.addKeyListener(keyAdapter);
+        this.setFocusable(true);
+
+        int x = CONSTANT.width/2 - planeImage.getWidth(null)/2;
+        int y = CONSTANT.height - planeImage.getHeight() - 20;
+        int width = planeImage.getWidth();
+        int height = planeImage.getHeight();
+        plane = new Plane(planeImage,x,y,width,height,3);
     }
 
     private void updateGame() {
